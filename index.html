@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🥖 Tiệm Bánh Mì Cute</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Baloo 2', cursive; user-select: none; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ffe4ec 0%, #fff5d6 50%, #d4f5e9 100%);
+    padding: 16px;
+    overflow: hidden;
+  }
+
+  /* ===== KHUNG GAME ===== */
+  .game {
+    width: 480px;
+    max-width: 100%;
+    background: #fffdf7;
+    border-radius: 28px;
+    padding: 18px;
+    box-shadow: 0 20px 50px rgba(255, 150, 170, 0.35), 0 0 0 6px #fff, 0 0 0 10px #ffd6e0;
+    position: relative;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #ffb347, #ffcc70);
+    border-radius: 20px;
+    padding: 12px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 6px 0 #e89a2f;
+  }
+
+  .header .shop-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #7a4a00;
+  }
+
+  .money-box {
+    background: #fff8e1;
+    border-radius: 14px;
+    padding: 4px 14px;
+    font-weight: 800;
+    color: #e67e22;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: inset 0 -3px 0 rgba(0,0,0,0.06);
+  }
+
+  /* ===== KHU VỰC KHÁCH HÀNG ===== */
+  .customer-area {
+    position: relative;
+    height: 170px;
+    background: linear-gradient(180deg, #e3f7ff 0%, #f6fff0 100%);
+    border-radius: 20px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 8px;
+    overflow: hidden;
+    border: 3px dashed #bfe8d0;
+  }
+
+  /* Mây trang trí */
+  .cloud {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: drift linear infinite;
+  }
+  .cloud::before, .cloud::after {
+    content: ''; position: absolute; background: #fff; border-radius: 50%;
+  }
+  .c1 { width: 40px; height: 40px; top: 15px; animation-duration: 22s; }
+  .c1::before { width: 30px; height: 30px; top: 10px; left: -14px; }
+  .c1::after { width: 24px; height: 24px; top: 14px; left: 26px; }
+  .c2 { width: 30px; height: 30px; top: 45px; animation-duration: 30s; animation-delay: -8s; }
+  .c2::before { width: 22px; height: 22px; top: 8px; left: -10px; }
+
+  @keyframes drift {
+    from { left: -60px; }
+    to { left: 105%; }
+  }
+
+  /* Khách hàng */
+  .customer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: walkIn 0.5s ease;
+  }
+
+  @keyframes walkIn {
+    from { transform: translateX(200px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  .customer-face {
+    font-size: 3.6rem;
+    animation: bob 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 4px 4px rgba(0,0,0,0.1));
+  }
+
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .bubble {
+    position: relative;
+    background: #fff;
+    border: 2.5px solid #ffb3c6;
+    border-radius: 16px;
+    padding: 8px 14px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #d633f6c;
+    margin-bottom: 8px;
+5    max-width: 260px;
+    text-align: center;
+    animation: pop 0.3s ease;
+    box-shadow: 0 4px 0 #ffd6e0;
+  }
+
+  .bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: #ffb3c6;
+  }
+
+  @keyframes pop {
+    from { transform: scale(0.6); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* Mặt đất */
+  .floor {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 22px;
+    background: repeating-linear-gradient(90deg, #ffe8b3, #ffe8b3 18px, #ffd98a 18px, #ffd98a 36px);
+    border-radius: 0 0 20px 20px;
+  }
+
+  /* ===== KHU CHẾ BIẾN ===== */
+  .title-small {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #a07a4a;
+    margin: 0 0 8px 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .ingredients {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .ing {
+    background: #fff;
+    border: 3px solid #ffe0b3;
+    border-radius: 18px;
+    padding: 10px 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 5px 0 #ffe0b3;
+  }
+
+  .ing:hover:not(.disabled) {
+    transform: translateY(-3px);
+    border-color: #ffb347;
+    box-shadow: 0 8px 0 #ffcc70;
+  }
+
+  .ing:active:not(.disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #ffe0b3;
+  }
+
+  .ing .emoji { font-size: 1.9rem; display: block; }
+  .ing .label { font-size: 0.72rem; font-weight: 700; color: #8a6a3a; margin-top: 2px; }
+
+  .ing.disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .ing.chosen {
+    background: #d4e9;
+    border-color: #4dd4ac;
+    box-shadow: 0 5px 0 #4dd4ac;
+  }
+
+  /* ===== BÁNH MÌ ĐANG LÀM ===== */
+  .making {
+    background: #fff8e1;
+    border: 3px dashed #ffcc70;
+    border-radius: 18px;
+    padding: 12px;
+    margin-bottom: 12px;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .making .slot {
+    width: 46px; height: 46px;
+    background: #fff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    border: 2px solid #ffe0b3;
+    animation: pop 0.25s ease;
+  }
+
+  .making .placeholder {
+    color: #c9a86a;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  /* ===== NÚT BÁN ===== */
+  .btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 18px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+
+  .btn-sell {
+    background: linear-gradient(135deg, #ff8fab, #ff5c8a);
+    color: #fff;
+    box-shadow: 0 6px 0 #d63d6a;
+  }
+
+  .btn-sell:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 0 #d63d6a; }
+  .btn-sell:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 3px 0 #d63d6a; }
+  .btn-sell:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: 0 6px 0 #ccc; }
+
+  /* ===== THÔNG BÁO ===== */
+  .toast {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    background: #fff;
+    border: 3px solid #ffb347;
+    border-radius: 16px;
+    padding: 10px 22px;
+    font-weight: 800;
+    color: #e67e22;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 99;
+    font-size: 1rem;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.good { border-color: #4dd4ac; color: #1a9e78; }
+
+  /* ===== ĐIỂM SAO BAY LÊN ===== */
+  .float-text {
+    position: fixed;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: #1a9e78;
+    pointer-events: none;
+    animation: floatUp 1.1s ease-out forwards;
+    z-index: 100;
+    text-shadow: 0 2px 0 #fff;
+  }
+
+  @keyframes floatUp {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to { opacity: 0; transform: translateY(-70px) scale(1.4); }
+  }
+
+  /* ===== MÀN HÌNH KẾT THÚC / SHOP ===== */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 253, 247, 0.96);
+    border-radius: 28px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    z-index: 10;
+  }
+  .overlay.show { display: flex; animation: pop 0.3s ease; }
+
+  .overlay h2 { font-size: 1.6rem; color: #d6336c; margin-bottom: 8px; }
+  .overlay p { color: #8a6a3a; font-weight: 600; margin-bottom: 18px; }
+
+  .shop-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    background: #fff8e1;
+    border: 3px solid #ffcc70;
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+  .shop-item .emoji { font-size: 2rem; }
+  .shop-item .info { flex: 1; }
+  .shop-item .info b { color: #7a4a00; font-size: 0.95rem; display: block; }
+  .shop-item .info span { font-size: 0.78rem; color: #a07a4a; }
+  .shop-item button {
+    background: #4dd4ac; color: #fff; border: none;
+    padding: 8px 14px; border-radius: 12px; font-weight: 800;
+    cursor: pointer; font-family: inherit; font-size: 0.85rem;
+    box-shadow: 0 4px 0 #2ba584;
+  }
+  .shop-item button:disabled { background: #ccc; box-shadow: 0 4px 0 #aaa; cursor: not-allowed; }
+
+  .btn-close { background: #ffb347; color: #fff; box-shadow: 0 5px 0 #e89a2f; margin-top: 6px; }
+
+  /* ===== THANH TRÊN CÙNG ===== */
+  .top-btns {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .mini-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 14px;
+    background: #fff;
+    border: 3px solid #bfe8d0;
+    font-family: inherit;
+    font-weight: 800;
+    color: #1a9e78;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.15s;
+  }
+  .mini-btn:hover { background: #e6fff6; transform: translateY(-2px); }
+
+  /* ===== TIMER ===== */
+  .timer-bar {
+    height: 12px;
+    background: #ffe0e6;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .timer-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #4dd4ac, #ffd166, #ff5c8a);
+    border-radius: 10px;
+    transition: width 0.1s linear;
+  }
+</style>
+</head>
+<body>
+
+<div class="game">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="shop-name">🥖 Tiệm Bánh Mì Cute</div>
+    <div class="money-box">💰 <span id="money">0</span>đ</div>
+  </div>
+
+  <!-- TIMER -->
+  <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+
+  <!-- KHÁCH HÀNG -->
+  <div class="customer-area" id="customerArea">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="floor"></div>
+    <!-- Khách render ở đây -->
+  </div>
+
+  <!-- CHẾ BIẾN -->
+  <p class="title-small">🧑‍🍳 Chọn nguyên liệu</p>
+  <div class="ingredients" id="ingredients"></div>
+
+  <p class="title-small">🥪 Bánh mì của bạn</p>
+  <div class="making" id="making">
+    <span class="placeholder">Chọn nguyên liệu để làm bánh...</span>
+  </div>
+
+  <button class="btn btn-sell" id="sellBtn" disabled>🍽️ Bán cho khách</button>
+
+  <!-- SHOP OVERLAY -->
+  <div class="overlay" id="shopOverlay">
+    <h2>🛒 Cửa Hàng Nâng Cấp</h2>
+    <p>Dùng tiền để mở khóa nguyên liệu xịn hơn!</p>
+    <div id="shopList" style="width:100%"></div>
+    <button class="btn btn-close" onclick="closeShop()">Đóng</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================== DỮ LIỆU GAME ================== */
+const INGREDIENTS = {
+  pate:   { emoji: '🥫', name: 'Pate',      price: 0,    value: 5000,  unlocked: true },
+  trung:  { emoji: '🥚', name: 'Trứng',     price: 0,    value: 6000,  unlocked: true },
+  thit:   { emoji: '🥩', name: 'Thịt',      price: 0,    value: 7000,  unlocked: true },
+  cha:    { emoji: '🌭', name: 'Chả',       price: 20000, value: 9000, unlocked: false },
+  rau:    { emoji: '🥬', name: 'Rau',       price: 15000, value: 7000, unlocked: false },
+  phomai: { emoji: '🧀', name: 'Phô mai',   price: 30000, value: 12000, unlocked: false },
+  sot:    { emoji: '🌶️', name: 'Tương ớt',  price: 10000, value: 5000,  unlocked: false },
+  xucxich:{ emoji: '🌯', name: 'Xúc xích',  price: 25000, value: 10000, unlocked: false },
+  ca:     { emoji: '🐟', name: 'Cá hộp',    price: 35000, value: 13000, unlocked: false },
+};
+
+const CUSTOMERS = ['👧','👦','🧑','👩','👨','🧓','👵','🧕','👱‍♀️','🧔','👩‍🦰','🧑‍🎤'];
+
+/* ================== STATE ================== */
+let state = {
+  money: 0,
+  currentCustomer: null,
+  order: [],        // nguyên liệu khách muốn
+  chosen: [],       // nguyên liệu người chơi chọn
+  timeLeft: 100,
+  maxTime: 100,
+  running: false,
+  unlockedIngredients: ['pate', 'trung', 'thit'],
+  level: 1,
+  totalSold: 0,
+  streak: 0,
+};
+
+let timerInterval = null;
+
+/* ================== DOM ================== */
+const $ = id => document.getElementById(id);
+const moneyEl = $('money');
+const customerArea = $('customerArea');
+const ingredientsEl = $('ingredients');
+const makingEl = $('making');
+const sellBtn = $('sellBtn');
+const toastEl = $('toast');
+const timerFill = $('timerFill');
+const shopList = $('shopList');
+
+/* ================== HÀM TIỆN ÍCH ================== */
+function showToast(msg, good = false) {
+  toastEl.textContent = msg;
+  toastEl.className = 'toast show' + (good ? ' good' : '');
+  clearTimeout(toastEl._t);
+  toastEl._t = setTimeout(() => toastEl.className = 'toast', 1800);
+}
+
+function floatText(text, el) {
+  const rect = el.getBoundingClientRect();
+  const div = document.createElement('div');
+  div.className = 'float-text';
+  div.textContent = text;
+  div.style.left = rect.left + rect.width / 2 - 30 + 'px';
+  div.style.top = rect.top + 'px';
+  document.body.appendChild(div);
+  setTimeout(() => div.remove(), 1100);
+}
+
+function updateMoney() {
+  moneyEl.textContent = state.money.toLocaleString('vi-VN');
+}
+
+/* ================== TẠO KHÁCH HÀNG ================== */
+function spawnCustomer() {
+  // Chọn 2-3 nguyên liệu ngẫu nhiên từ kho đã mở
+  const pool = state.unlockedIngredients;
+  const num = Math.min(pool.length, 2 + Math.floor(Math.random() * 2));
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  state.order = shuffled.slice(0, num);
+
+  const face = CUSTOMERS[Math.floor(Math.random() * CUSTOMERS.length)];
+  state.currentCustomer = face;
+
+  // Render khách
+  const orderEmojis = state.order.map(k => INGREDIENTS[k].emoji).join(' + ');
+  customerArea.querySelectorAll('.customer').forEach(e => e.remove());
+
+  const cust = document.createElement('div');
+  cust.className = 'customer';
+  cust.innerHTML = `
+    <div class="bubble">Cho tui 1 bánh mì: ${orderEmojis}</div>
+    <div class="customer-face">${face}</div>
+  `;
+  customerArea.appendChild(cust);
+
+  state.chosen = [];
+  state.timeLeft = state.maxTime;
+  state.running = true;
+  renderIngredients();
+  renderMaking();
+  sellBtn.disabled = true;
+
+  startTimer();
+}
+
+/* ================== TIMER ================== */
+function startTimer() {
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    if (!state.running) return;
+    state.timeLeft -= 1;
+    timerFill.style.width = Math.max(0, (state.timeLeft / state.maxTime) * 100) + '%';
+
+    if (state.timeLeft <= 0) {
+      clearInterval(timerInterval);
+      customerLeave(false);
+    }
+  }, 100);
+}
+
+/* ================== KHÁCH RỜI ================== */
+function customerLeave(success) {
+  state.running = false;
+  clearInterval(timerInterval);
+
+  if (!success) {
+    state.streak = 0;
+    showToast('⌛ Khách bỏ đi rồi!');
+  }
+
+  setTimeout(() => {
+    spawnCustomer();
+  }, 900);
+}
+
+/* ================== RENDER NGUYÊN LIỆU ================== */
+function renderIngredients() {
+  ingredientsEl.innerHTML = '';
+  Object.keys(INGREDIENTS).forEach(key => {
+    const ing = INGREDIENTS[key];
+    if (!state.unlockedIngredients.includes(key)) return;
+
+    const div = document.createElement('div');
+    div.className = 'ing';
+    if (state.chosen.includes(key)) div.classList.add('chosen');
+
+    div.innerHTML = `
+      <span class="emoji">${ing.emoji}</span>
+      <span class="label">${ing.name}</span>
+    `;
+    div.onclick = () => pickIngredient(key);
+    ingredientsEl.appendChild(div);
+  });
+}
+
+/* ================== CHỌN NGUYÊN LIỆU ================== */
+function pickIngredient(key) {
+  if (!state.running) return;
+  if (state.chosen.includes(key)) return;
+  if (state.chosen.length >= 3) {
+    showToast('Chỉ được chọn tối đa 3 nguyên liệu!');
+    return;
+  }
+  state.chosen.push(key);
+  renderIngredients();
+  renderMaking();
+  checkCanSell();
+}
+
+/* ================== RENDER BÁNH MÌ ================== */
+function renderMaking() {
+  if (state.chosen.length === 0) {
+    makingEl.innerHTML = '<span class="placeholder">Chọn nguyên liệu để làm bánh...</span>';
+    return;
+  }
+  makingEl.innerHTML = '<span style="font-size:1.6rem">🥖</span>' +
+    state.chosen.map(k => `<div class="slot">${INGREDIENTS[k].emoji}</div>`).join('');
+}
+
+/* ================== CHECK NÚT BÁN ================== */
+function checkCanSell() {
+  const sortedChosen = [...state.chosen].sort().join(',');
+  const sortedOrder = [...state.order].sort().join(',');
+  sellBtn.disabled = sortedChosen !== sortedOrder;
+}
+
+/* ================== BÁN BÁNH ================== */
+sellBtn.onclick = () => {
+  if (sellBtn.disabled || !state.running) return;
+
+  // Tính tiền
+  let total = 5000; // tiền công cơ b nguyênản
+  state.ch liosen.forEach(kệu => total += INGREDIENTS[k].value);
+
+  // Bonus x combo
+  if (state.chosen.length === 3) total += 5000;
+
+  // Bonus streak
+  state.streak++;
+  if (state.streak >= 3) total += 3000;
+
+  state.money += total;
+  state.totalSold++;
+  updateMoney();
+  floatText('+' + total.toLocaleString('vi-VN') + 'đ', sellBtn);
+
+  showToast('✅ Ngon quá! Khách hài lòng!', true);
+
+  state.running = false;
+  clearInterval(timerInterval);
+  sellBtn.disabled = true;
+
+  // Tăng độ khó mỗi 5 khách
+  if (state.totalSold % 5 === 0) {
+    state.maxTime = Math.max(50, state.maxTime - 8);
+    state.level++;
+    showToast(`🔥 Level ${state.level}! Khách nhanh hơn rồi!`);
+  }
+
+  setTimeout(() => spawnCustomer(), 900);
+};
+
+/* ================== SHOP ================== */
+function openShop() {
+  renderShop();
+  $('shopOverlay').classList.add('show');
+}
+function closeShop() { $('shopOverlay').classList.remove('show'); }
+
+function renderShop() {
+  shopList.innerHTML = '';
+  Object.keys(INGREDIENTS).forEach(key => {
+    const ing = INGREDIENTS[key];
+    if (state.unlockedIngredients.includes(key)) return;
+
+    const canBuy = state.money >= ing.price;
+    const div = document.createElement('div');
+    div.className = 'shop-item';
+    div.innerHTML = `
+      <span class="emoji">${ing.emoji}</span>
+      <div class="info">
+        <b>${ing.name}</b>
+        <span>+${ing.value.toLocaleString('vi-VN')}đ/bánh · ${ing.price.toLocaleString('vi-VN')}đ</span>
+      </div>
+      <button ${canBuy ? '' : 'disabled'} onclick="buyIngredient('${key}')">Mua</button>
+    `;
+    shopList.appendChild(div);
+  });
+}
+
+function buyIngredient(key) {
+  const ing = INGREDIENTS[key];
+  if (state.money < ing.price) return;
+  state.money -= ing.price;
+  state.unlockedIngredients.push(key);
+  updateMoney();
+  renderShop();
+  renderIngredients();
+  showToast(`🎉 Mở khóa ${ing.name}!`, true);
+}
+
+/* ================== NÚT TRÊN ================== */
+// Thêm nút Shop vào header
+const topBtns = document.createElement('div');
+topBtns.className = 'top-btns';
+topBtns.innerHTML = `<button class="mini-btn" onclick="openShop()">🛒 Cửa hàng</button>`;
+document.querySelector('.header').after(topBtns);
+
+/* ================== KHỞI ĐỘNG ================== */
+updateMoney();
+spawnCustomer();
+</script>
+</body>
+</html>
